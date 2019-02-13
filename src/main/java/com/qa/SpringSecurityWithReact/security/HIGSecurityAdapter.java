@@ -27,8 +27,8 @@ public class HIGSecurityAdapter extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and().formLogin().and()
-				.userDetailsService(musds);
+		http.cors().and().csrf().disable().authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and()
+				.formLogin().defaultSuccessUrl("/", true).and().userDetailsService(musds);
 	}
 
 	@Bean
