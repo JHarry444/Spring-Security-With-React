@@ -1,6 +1,11 @@
 package com.qa.SpringSecurityWithReact.services;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +25,9 @@ public class UserService {
 		if (userRepo.findByUsername(username) != null) {
 			return null;
 		}
-		User toRegister = new User();
-		toRegister.setUsername(username);
-		toRegister.setPassword(passwordEncoder.encode(password));
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		authorities.add(new SimpleGrantedAuthority("USER"));
+		User toRegister = new User(username, passwordEncoder.encode(password), authorities);
 		return userRepo.save(toRegister);
 	}
 	

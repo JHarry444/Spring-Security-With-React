@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.qa.SpringSecurityWithReact.services.MyUserDetailsService;
 
@@ -22,13 +23,13 @@ public class HIGSecurityAdapter extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(null);
+		auth.authenticationProvider(null).userDetailsService(musds).passwordEncoder(encoder());
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and()
-				.formLogin().defaultSuccessUrl("/", true).and().userDetailsService(musds);
+		http.addFilterBefore(new CustomFilter(), BasicAuthenticationFilter.class).authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and()
+				.formLogin().loginPage("/login").defaultSuccessUrl("/", true).and().userDetailsService(musds);
 	}
 
 	@Bean
