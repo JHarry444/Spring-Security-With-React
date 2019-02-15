@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +20,6 @@ public class User implements UserDetails {
 		this(username, password, true, true, true, true, authorities);
 	}
 
- 
 	public User(String username, String password, Boolean accountNonExpired, Boolean accountNonLocked,
 			Boolean credentialsNonExpired, Boolean enabled, Set<GrantedAuthority> authorities) {
 		this.username = username;
@@ -30,21 +31,22 @@ public class User implements UserDetails {
 		this.authorities = authorities;
 	}
 
-
 	@Id
 	private String username;
 
 	private String password;
-	
+
 	private Boolean accountNonExpired = true;
-	
+
 	private Boolean accountNonLocked = true;
-	
+
 	private Boolean credentialsNonExpired = true;
-	
+
 	private Boolean enabled = true;
 	
-	private final Set<GrantedAuthority> authorities;
+	@ManyToOne
+	@JoinColumn
+	private UserRole role;
 
 	public String getUsername() {
 		return username;
