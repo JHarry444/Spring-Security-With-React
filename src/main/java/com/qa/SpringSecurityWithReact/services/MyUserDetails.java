@@ -1,49 +1,56 @@
 package com.qa.SpringSecurityWithReact.services;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.qa.SpringSecurityWithReact.entities.User;
 
-public class MyUserDetails implements UserDetails {
-	
-	private static final long serialVersionUID = -3484755980839679471L;
-	
-	private User user;
-	
-	public MyUserDetails(User user) {
-		this.user = user;
+import org.springframework.util.StringUtils;
+
+public class MyUserDetails extends User implements UserDetails {
+
+	private static final long serialVersionUID = 1L;
+	private List<String> userRoles;
+
+	public MyUserDetails(User user, List<String> userRoles) {
+		super(user);
+		this.userRoles = userRoles;
 	}
 
+	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		String roles = StringUtils.collectionToCommaDelimitedString(userRoles);
+		return AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
 	}
 
-	public String getPassword() {
-		return this.user.getPassword();
-	}
-
-	public String getUsername() {
-		return this.user.getUsername();
-	}
-
+	@Override
 	public boolean isAccountNonExpired() {
-		return this.user.getAccountNonExpired();
+		// TODO Auto-generated method stub
+		return true;
 	}
 
+	@Override
 	public boolean isAccountNonLocked() {
-		return this.user.getAccountNonLocked();
+		return true;
 	}
 
+	@Override
 	public boolean isCredentialsNonExpired() {
-		return this.user.getCredentialsNonExpired();
+		return true;
 	}
 
+	@Override
 	public boolean isEnabled() {
-		return this.user.getEnabled();
+		return true;
+	}
+
+	@Override
+	public String getUsername() {
+		return super.getUsername();
 	}
 
 }

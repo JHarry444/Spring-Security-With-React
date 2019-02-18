@@ -1,40 +1,63 @@
 package com.qa.SpringSecurityWithReact.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.io.Serializable;
+
+import javax.persistence.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
-public class User {
+@Table(name = "user")
+public class User implements Serializable {
 
-	public User(String username, String password) {
+	private static final long serialVersionUID = 1L;
 
-		this.username = username;
-		this.password = password;
-	}
-
-	public User() {
-		// Default Constructor
-	}
- 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "userid")
+	private Long userId;
+
+	@Column(name = "username")
 	private String username;
 
+	@Column(name = "password")
 	private String password;
-	
-	private Boolean accountNonExpired = true;
-	
-	private Boolean accountNonLocked = true;
-	
-	private Boolean credentialsNonExpired = true;
-	
-	private Boolean enabled = true;
 
-	public String getUsername() {
-		return username;
+	@Column(name = "enabled")
+	private int enabled;
+
+	public User() {
+
 	}
 
-	public void setUsername(String username) {
+	public User(String username, String password, int enabled) {
 		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+	}
+
+	public User(User user) {
+		this.userId = user.userId;
+		this.username = user.username;
+		this.password = user.password;
+		this.enabled = user.enabled;
+	}
+
+	public int getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
+
+	public Long getUserid() {
+		return userId;
+	}
+
+	public void setUserid(Long userid) {
+		this.userId = userid;
 	}
 
 	public String getPassword() {
@@ -45,36 +68,12 @@ public class User {
 		this.password = password;
 	}
 
-	public Boolean getAccountNonExpired() {
-		return accountNonExpired;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setAccountNonExpired(Boolean accountNonExpired) {
-		this.accountNonExpired = accountNonExpired;
-	}
-
-	public Boolean getAccountNonLocked() {
-		return accountNonLocked;
-	}
-
-	public void setAccountNonLocked(Boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
-	}
-
-	public Boolean getCredentialsNonExpired() {
-		return credentialsNonExpired;
-	}
-
-	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-		this.credentialsNonExpired = credentialsNonExpired;
-	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
