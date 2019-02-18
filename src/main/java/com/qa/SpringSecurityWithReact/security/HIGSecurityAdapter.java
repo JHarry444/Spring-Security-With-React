@@ -1,8 +1,5 @@
 package com.qa.SpringSecurityWithReact.security;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +9,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import com.qa.SpringSecurityWithReact.entities.User;
 import com.qa.SpringSecurityWithReact.services.MyUserDetailsService;
 
 @Configuration
@@ -40,20 +36,31 @@ public class HIGSecurityAdapter extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		Set<GrantedAuthority> auths = new HashSet<>();
-		auths.add(new SimpleGrantedAuthority("ADMIN"));
+		this.musds.init();
 		auth.jdbcAuthentication().dataSource(dataSource())
 				.usersByUsernameQuery("select username,password, enabled from user where username=?")
-				.authoritiesByUsernameQuery("select username, role from user_role where username=?")
-				.withUser(new User("admin", encoder().encode("password"), auths)).and()
+				.authoritiesByUsernameQuery("select username, role from user_role where username=?").and()
 				.authenticationProvider(authenticationProvider()).userDetailsService(musds).passwordEncoder(encoder());
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.addFilterBefore(new CustomFilter(), BasicAuthenticationFilter.class).authorizeRequests()
-				.regexMatchers("/newUser").fullyAuthenticated().and().formLogin().loginPage("/login")
-				.defaultSuccessUrl("/", true).and().userDetailsService(musds);
+		http.cors().disable();
+		http.csrf().disable();
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+		http.authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and().formLogin()
+				.loginProcessingUrl("/login").successHandler(successHandler()).failureHandler(failureHandler()).and()
+				.userDetailsService(musds);
+	}
+
+	@Bean
+	public AuthenticationFailureHandler failureHandler() {
+		return new CustomFailureHandler();
+	}
+
+	@Bean
+	public AuthenticationSuccessHandler successHandler() {
+		return new CustomSuccessHandler();
 	}
 
 	@Bean
@@ -64,7 +71,7 @@ public class HIGSecurityAdapter extends WebSecurityConfigurerAdapter {
 		return authProvider;
 	}
 
-	@Bean
+	@Bean(name = "passwordEncoder")
 	public PasswordEncoder encoder() {
 		return new BCryptPasswordEncoder(11);
 	}
