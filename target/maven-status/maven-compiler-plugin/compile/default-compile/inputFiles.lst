@@ -1,0 +1,13 @@
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/services/MyUserDetails.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/repos/UserRepository.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/security/CustomFailureHandler.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/services/MyUserDetailsService.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/SpringSecurityWithReactApplication.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/controllers/UserController.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/entities/User.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/security/CustomFilter.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/entities/UserRole.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/repos/UserRolesRepository.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/services/UserService.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/security/HIGSecurityAdapter.java
+/home/jjharry444/Spring-Security-With-React/src/main/java/com/qa/SpringSecurityWithReact/security/CustomSuccessHandler.java

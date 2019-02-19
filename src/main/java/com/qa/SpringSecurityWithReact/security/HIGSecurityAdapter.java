@@ -39,14 +39,12 @@ public class HIGSecurityAdapter extends WebSecurityConfigurerAdapter {
 		this.musds.init();
 		auth.jdbcAuthentication().dataSource(dataSource())
 				.usersByUsernameQuery("select username,password, enabled from user where username=?")
-				.authoritiesByUsernameQuery("select username, role from user_role where username=?").and()
+				.authoritiesByUsernameQuery("select userid, role from user_role where userid=?").and()
 				.authenticationProvider(authenticationProvider()).userDetailsService(musds).passwordEncoder(encoder());
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().disable();
-		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 		http.authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and().formLogin()
 				.loginProcessingUrl("/login").successHandler(successHandler()).failureHandler(failureHandler()).and()
