@@ -39,7 +39,7 @@ public class HIGSecurityAdapter extends WebSecurityConfigurerAdapter {
 		this.musds.init();
 		auth.jdbcAuthentication().dataSource(dataSource())
 				.usersByUsernameQuery("select username,password, enabled from user where username=?")
-				.authoritiesByUsernameQuery("select username, role from user_role where username=?").and()
+				.authoritiesByUsernameQuery("select user_id, role from user_role where user_id=?").and()
 				.authenticationProvider(authenticationProvider()).userDetailsService(musds).passwordEncoder(encoder());
 	}
 
