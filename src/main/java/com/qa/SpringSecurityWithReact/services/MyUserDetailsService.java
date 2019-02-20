@@ -24,7 +24,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	public void init() {
 		User user = userRepository.findByUsername("admin");
 		if (user == null) {
-			user = this.registerNewUser("admin", passwordEncoder.encode("password"), "ADMIN");
+			user = this.registerNewUser("admin", "password", "ADMIN");
 		}
 	}
 

@@ -45,7 +45,8 @@ public class HIGSecurityAdapter extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+		http.csrf().disable().cors().disable();
 		http.authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and().formLogin()
 				.loginProcessingUrl("/login").successHandler(successHandler()).failureHandler(failureHandler()).and()
 				.userDetailsService(musds);
