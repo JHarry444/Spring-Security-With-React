@@ -31,12 +31,12 @@ public class MyUserDetailsService implements UserDetailsService {
 		this.userRolesRepository = userRolesRepository;
 	}
 
-//	public void init() {
-//		User user = userRepository.findByUsername("admin");
-//		if (user == null) {
-//			user = this.registerNewUser("admin", "password", "ADMIN");
-//		}
-//	}
+	public void init() {
+		User user = userRepository.findByUsername("admin");
+		if (user == null) {
+			user = this.registerNewUser("admin", "password", "ADMIN");
+		}
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

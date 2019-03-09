@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		this.muds.init();
+		this.muds.init();
 		auth.jdbcAuthentication().dataSource(dataSource)
 				.usersByUsernameQuery("select username,password, enabled from user where username=?")
 				.authoritiesByUsernameQuery("select userid, role from user_role where userid=?").and()
@@ -53,11 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.cors().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 		http.authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and().formLogin()
 				.loginProcessingUrl("/login").successHandler(successHandler).failureHandler(failureHandler).and()
 				.userDetailsService(muds);
-//		http.addFilterBefore(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class);
 	}
 
 }

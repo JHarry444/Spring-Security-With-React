@@ -1,4 +1,4 @@
-package com.qa.SpringSecurityWithReact.security;
+package com.qa.SpringSecurityWithReact.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

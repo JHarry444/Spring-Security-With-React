@@ -15,8 +15,11 @@ import com.qa.SpringSecurityWithReact.services.MyUserDetailsService;
 @RestController
 public class UserController {
 
-	@Autowired
 	MyUserDetailsService muds;
+
+	public UserController(MyUserDetailsService muds) {
+		this.muds = muds;
+	}
 
 	@PostMapping("/newUser")
 	public User registerNewUser(String username, String password) {
