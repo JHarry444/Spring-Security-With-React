@@ -2,6 +2,7 @@
 package com.qa.SpringSecurityWithReact.controllers;
 
 import java.security.Principal;
+import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +16,16 @@ import com.qa.SpringSecurityWithReact.services.MyUserDetailsService;
 public class UserController {
 
 	@Autowired
-	MyUserDetailsService musds;
+	MyUserDetailsService muds;
 
 	@PostMapping("/newUser")
 	public User registerNewUser(String username, String password) {
-		return musds.registerNewUser(username, password);
+		return muds.registerNewUser(username, password);
+	}
+	
+	@RequestMapping("/hello")
+	public String hello() {
+		return "Hello world";
 	}
 
 	@RequestMapping("/user")

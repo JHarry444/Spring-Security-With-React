@@ -18,13 +18,34 @@ import com.qa.SpringSecurityWithReact.repos.UserRolesRepository;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
-	public void init() {
-		User user = userRepository.findByUsername("admin");
-		if (user == null) {
-			user = this.registerNewUser("admin", "password", "ADMIN");
+	private UserRepository userRepository;
+
+	private UserRolesRepository userRolesRepository;
+
+	public MyUserDetailsService(PasswordEncoder passwordEncoder, UserRepository userRepository,
+			UserRolesRepository userRolesRepository) {
+		this.passwordEncoder = passwordEncoder;
+		this.userRepository = userRepository;
+		this.userRolesRepository = userRolesRepository;
+	}
+
+//	public void init() {
+//		User user = userRepository.findByUsername("admin");
+//		if (user == null) {
+//			user = this.registerNewUser("admin", "password", "ADMIN");
+//		}
+//	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username);
+		if (null == user) {
+			throw new UsernameNotFoundException("No user present with username: " + username, null);
+		} else {
+			List<String> userRoles = userRolesRepository.findRoleByUserName(username);
+			return new MyUserDetails(user, userRoles);
 		}
 	}
 
@@ -39,20 +60,4 @@ public class MyUserDetailsService implements UserDetailsService {
 		}
 		return newUser;
 	}
-
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
-		if (null == user) {
-			throw new UsernameNotFoundException("No user present with username: " + username, null);
-		} else {
-			List<String> userRoles = userRolesRepository.findRoleByUserName(username);
-			return new MyUserDetails(user, userRoles);
-		}
-	}
-
-	@Autowired
-	private UserRepository userRepository;
-	@Autowired
-	private UserRolesRepository userRolesRepository;
 }
