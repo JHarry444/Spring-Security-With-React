@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().disable();
+		http.cors().and().csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 		http.authorizeRequests().regexMatchers("/newUser").fullyAuthenticated().and().formLogin()
 				.loginProcessingUrl("/login").successHandler(successHandler).failureHandler(failureHandler).and()
